@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dakom Agency | Rent Payment Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      padding: 20px;
+      margin: 0;
+    }
+
+    header {
+      background-color: #1e3d59;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      transition: background-color 0.5s ease;
+    }
+
+    header:hover {
+      background-color: #2a4e70;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    p.tagline {
+      font-style: italic;
+      color: #ddd;
+    }
+
+    section {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #1e3d59;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #1e3d59;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #163046;
+      transform: scale(1.05);
+    }
+
+    .confirmation {
+      margin-top: 20px;
+      background-color: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-left: 5px solid #28a745;
+      display: none;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dakom Agency</h1>
+    <p class="tagline">Your Home, Our Priority — Making Rent Easy</p>
+  </header>
+
+  <section>
+    <h2>Pay Your Rent</h2>
+    <form id="rentForm">
+      <label for="tenantName">Tenant Name:</label>
+      <input type="text" id="tenantName" required>
+
+      <label for="apartmentName">Apartment Name:</label>
+      <input type="text" id="apartmentName" required>
+
+      <label for="amount">Amount (Ksh):</label>
+      <input type="number" id="amount" required>
+
+      <button type="submit">Submit Payment</button>
+    </form>
+
+    <div class="confirmation" id="confirmationBox">
+      Payment successful! 🎉 Your details have been saved.
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('rentForm');
+    const confirmationBox = document.getElementById('confirmationBox');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('tenantName').value;
+      const apartment = document.getElementById('apartmentName').value;
+      const amount = document.getElementById('amount').value;
+
+      const paymentInfo = {
+        name: name,
+        apartment: apartment,
+        amount: amount,
+        date: new Date().toLocaleString()
+      };
+
+      // Store in localStorage
+      localStorage.setItem("lastPayment", JSON.stringify(paymentInfo));
+
+      // Show confirmation with animation
+      confirmationBox.style.display = "block";
+
+      // Reset form
+      form.reset();
+    });
+
+    // Auto-fill form if data exists
+    window.onload = function() {
+      const savedPayment = localStorage.getItem("lastPayment");
+      if (savedPayment) {
+        const data = JSON.parse(savedPayment);
+        document.getElementById('tenantName').value = data.name;
+        document.getElementById('apartmentName').value = data.apartment;
+        document.getElementById('amount').value = data.amount;
+      }
+    };
+  </script>
+
+</body>
+</html>
